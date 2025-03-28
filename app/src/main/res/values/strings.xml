@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Дыхательная техника 4-7-8</string>
+    <string name="title">Дыхательная техника 4-7-8</string>
+    <string name="start">Начать</string>
+    <string name="pause">Пауза</string>
+    <string name="exit">Завершить</string>
+    <string name="breathe_in">ВДЫХАЙ</string>
+    <string name="hold">ЗАДЕРЖИ</string>
+    <string name="breathe_out">ВЫДЫХАЙ</string>
+    <string name="cycles_completed">Завершенных циклов: %1$d</string>
+    <string name="get_started">Нажмите \'Начать\'</string>
+    <string name="exit_confirmation">Вы уверены, что хотите выйти?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="music_button_desc">Кнопка включения/выключения музыки</string>
+</resources>
