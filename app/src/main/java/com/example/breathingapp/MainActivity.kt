@@ -2,6 +2,7 @@ package com.example.breathingapp
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.*
 import android.view.MenuItem
@@ -20,6 +21,7 @@ data class BreathingPattern(
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var modeTextView: TextView
     private lateinit var timerTextView: TextView
     private lateinit var instructionTextView: TextView
     private lateinit var cyclesTextView: TextView
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private var isVibrationOn = false
     private var isMusicOn = false
     private var mediaPlayer: MediaPlayer? = null
+    private lateinit var preferences: SharedPreferences
 
     private val vibrator: Vibrator by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -65,10 +68,21 @@ class MainActivity : AppCompatActivity() {
         intArrayOf(0, 2, 1, 2)
     )
 
+    private val patternDragon = BreathingPattern(
+        "Дыхание дракона",
+        longArrayOf(3000L, 1000L, 6000L),
+        arrayOf("ВДОХНИ НОСОМ", "СОБЕРИСЬ", "ВЫДОХНИ КАК ДРАКОН"),
+        intArrayOf(R.color.breatheIn, R.color.hold, R.color.breatheOut),
+        intArrayOf(0, 2, 1)
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        preferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+        modeTextView = findViewById(R.id.modeTextView)
         timerTextView = findViewById(R.id.timerTextView)
         instructionTextView = findViewById(R.id.instructionTextView)
         cyclesTextView = findViewById(R.id.cyclesTextView)
@@ -79,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         menuButton = findViewById(R.id.menuButton)
         breathingCircle = findViewById(R.id.breathingCircle)
 
-        currentPattern = patternRelax
+        restorePreferences()
 
         startButton.setOnClickListener { toggleTimer() }
         finishButton.setOnClickListener { resetCycle() }
@@ -87,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         musicButton.setOnClickListener { toggleMusic() }
         menuButton.setOnClickListener { showMenu() }
 
+        updateSwitchesUI()
         updateUIForPattern()
     }
 
@@ -94,13 +109,15 @@ class MainActivity : AppCompatActivity() {
         val popup = PopupMenu(this, menuButton)
         popup.menu.add(0, 1, 0, "Релакс (4-7-8)")
         popup.menu.add(0, 2, 1, "Квадрат (Focus)")
-        popup.menu.add(0, 3, 2, "⚙️ Свой режим")
+        popup.menu.add(0, 3, 2, "Дыхание дракона")
+        popup.menu.add(0, 4, 3, "⚙️ Свой режим")
 
         popup.setOnMenuItemClickListener { item: MenuItem ->
             when (item.itemId) {
                 1 -> setPattern(patternRelax)
                 2 -> setPattern(patternBox)
-                3 -> showCustomDialog()
+                3 -> setPattern(patternDragon)
+                4 -> showCustomDialog()
             }
             true
         }
@@ -110,11 +127,13 @@ class MainActivity : AppCompatActivity() {
     private fun setPattern(pattern: BreathingPattern) {
         resetCycle()
         currentPattern = pattern
+        preferences.edit().putString(KEY_PATTERN_NAME, pattern.name).apply()
         updateUIForPattern()
     }
 
     private fun updateUIForPattern() {
         val pattern = currentPattern ?: return
+        modeTextView.text = pattern.name
         instructionTextView.text = pattern.name
         timerTextView.text = (pattern.durations[0] / 1000).toString()
         instructionTextView.setTextColor(ContextCompat.getColor(this, R.color.textDefault))
@@ -123,7 +142,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleTimer() {
         running = !running
-        startButton.text = if (running) "ПАУЗА" else "НАЧАТЬ"
+        startButton.text = if (running) "Пауза" else "Начать"
 
         if (running) {
             startPhase(currentPhase)
@@ -209,7 +228,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleVibration() {
         isVibrationOn = !isVibrationOn
-        vibrationButton.text = if (isVibrationOn) "Вибрация: ON" else "Вибрация: OFF"
+        preferences.edit().putBoolean(KEY_VIBRATION, isVibrationOn).apply()
+        updateSwitchesUI()
     }
 
     private fun toggleMusic() {
@@ -217,6 +237,7 @@ class MainActivity : AppCompatActivity() {
             mediaPlayer?.pause()
             isMusicOn = false
             musicButton.alpha = 0.5f
+            musicButton.setImageResource(R.drawable.ic_music_off)
         } else {
             if (mediaPlayer == null) {
                 mediaPlayer = MediaPlayer.create(this, R.raw.background_music)
@@ -225,7 +246,9 @@ class MainActivity : AppCompatActivity() {
             mediaPlayer?.start()
             isMusicOn = true
             musicButton.alpha = 1.0f
+            musicButton.setImageResource(R.drawable.ic_music_on)
         }
+        preferences.edit().putBoolean(KEY_MUSIC, isMusicOn).apply()
     }
 
     private fun resetCycle() {
@@ -237,7 +260,7 @@ class MainActivity : AppCompatActivity() {
 
         cyclesTextView.text = "Циклов: 0"
         updateUIForPattern()
-        startButton.text = "НАЧАТЬ"
+        startButton.text = "Начать"
 
         breathingCircle.scaleX = 0.5f
         breathingCircle.scaleY = 0.5f
@@ -250,10 +273,26 @@ class MainActivity : AppCompatActivity() {
         layout.orientation = LinearLayout.VERTICAL
         layout.setPadding(50, 40, 50, 10)
 
-        val input1 = EditText(this).apply { hint = "Вдох (сек)"; inputType = 2 }
-        val input2 = EditText(this).apply { hint = "Пауза (сек)"; inputType = 2 }
-        val input3 = EditText(this).apply { hint = "Выдох (сек)"; inputType = 2 }
-        val input4 = EditText(this).apply { hint = "Пауза (сек)"; inputType = 2 }
+        val input1 = EditText(this).apply {
+            hint = "Вдох (сек)"
+            inputType = 2
+            setText((preferences.getLong(KEY_CUSTOM_INHALE, 4000L) / 1000).toString())
+        }
+        val input2 = EditText(this).apply {
+            hint = "Пауза (сек)"
+            inputType = 2
+            setText((preferences.getLong(KEY_CUSTOM_HOLD_1, 0L) / 1000).toString())
+        }
+        val input3 = EditText(this).apply {
+            hint = "Выдох (сек)"
+            inputType = 2
+            setText((preferences.getLong(KEY_CUSTOM_EXHALE, 4000L) / 1000).toString())
+        }
+        val input4 = EditText(this).apply {
+            hint = "Пауза (сек)"
+            inputType = 2
+            setText((preferences.getLong(KEY_CUSTOM_HOLD_2, 0L) / 1000).toString())
+        }
 
         layout.addView(input1)
         layout.addView(input2)
@@ -268,6 +307,8 @@ class MainActivity : AppCompatActivity() {
                 val t2 = (input2.text.toString().toLongOrNull() ?: 0) * 1000
                 val t3 = (input3.text.toString().toLongOrNull() ?: 4) * 1000
                 val t4 = (input4.text.toString().toLongOrNull() ?: 0) * 1000
+
+                saveCustomPattern(t1, t2, t3, t4)
 
                 val custom = BreathingPattern(
                     "Свой режим",
@@ -296,5 +337,65 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         currentTimer?.cancel()
         mediaPlayer?.release()
+    }
+
+    private fun restorePreferences() {
+        isVibrationOn = preferences.getBoolean(KEY_VIBRATION, false)
+        isMusicOn = preferences.getBoolean(KEY_MUSIC, false)
+
+        val selectedPattern = preferences.getString(KEY_PATTERN_NAME, patternRelax.name)
+        currentPattern = when (selectedPattern) {
+            patternBox.name -> patternBox
+            patternDragon.name -> patternDragon
+            CUSTOM_PATTERN_NAME -> buildCustomPatternFromPrefs()
+            else -> patternRelax
+        }
+
+        if (isMusicOn) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.background_music)
+            mediaPlayer?.isLooping = true
+            mediaPlayer?.start()
+        }
+    }
+
+    private fun buildCustomPatternFromPrefs(): BreathingPattern {
+        val t1 = preferences.getLong(KEY_CUSTOM_INHALE, 4000L)
+        val t2 = preferences.getLong(KEY_CUSTOM_HOLD_1, 0L)
+        val t3 = preferences.getLong(KEY_CUSTOM_EXHALE, 4000L)
+        val t4 = preferences.getLong(KEY_CUSTOM_HOLD_2, 0L)
+        return BreathingPattern(
+            CUSTOM_PATTERN_NAME,
+            longArrayOf(t1, t2, t3, t4),
+            arrayOf("ВДОХ", "ДЕРЖИ", "ВЫДОХ", "ДЕРЖИ"),
+            intArrayOf(R.color.breatheIn, R.color.hold, R.color.breatheOut, R.color.hold),
+            intArrayOf(0, 2, 1, 2)
+        )
+    }
+
+    private fun saveCustomPattern(t1: Long, t2: Long, t3: Long, t4: Long) {
+        preferences.edit()
+            .putLong(KEY_CUSTOM_INHALE, t1)
+            .putLong(KEY_CUSTOM_HOLD_1, t2)
+            .putLong(KEY_CUSTOM_EXHALE, t3)
+            .putLong(KEY_CUSTOM_HOLD_2, t4)
+            .apply()
+    }
+
+    private fun updateSwitchesUI() {
+        vibrationButton.text = if (isVibrationOn) "Вибрация: вкл" else "Вибрация: выкл"
+        musicButton.alpha = if (isMusicOn) 1.0f else 0.5f
+        musicButton.setImageResource(if (isMusicOn) R.drawable.ic_music_on else R.drawable.ic_music_off)
+    }
+
+    companion object {
+        private const val PREFS_NAME = "breathing_settings"
+        private const val KEY_VIBRATION = "vibration_enabled"
+        private const val KEY_MUSIC = "music_enabled"
+        private const val KEY_PATTERN_NAME = "selected_pattern"
+        private const val KEY_CUSTOM_INHALE = "custom_inhale"
+        private const val KEY_CUSTOM_HOLD_1 = "custom_hold_1"
+        private const val KEY_CUSTOM_EXHALE = "custom_exhale"
+        private const val KEY_CUSTOM_HOLD_2 = "custom_hold_2"
+        private const val CUSTOM_PATTERN_NAME = "Свой режим"
     }
 }
