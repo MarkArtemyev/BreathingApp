@@ -5,164 +5,186 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1E1E2E"
-    android:keepScreenOn="true"
-    android:padding="24dp"
+    android:background="@drawable/gradient_background"
+    android:padding="16dp"
     tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Дыхательные практики"
-        android:textColor="#CDD6F4"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/modeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="Релакс (4-7-8)"
-        android:textColor="#94E2D5"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/titleTextView"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-    <ImageButton
-        android:id="@+id/menuButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/bg_circle_button"
-        android:contentDescription="Открыть выбор режима"
-        android:padding="12dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_menu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/cyclesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-medium"
-        android:letterSpacing="0.05"
-        android:text="Циклов: 0"
-        android:textColor="#A6ADC8"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modeTextView" />
-
-    <ImageView
-        android:id="@+id/breathingCircle"
-        android:layout_width="270dp"
-        android:layout_height="270dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/circle_shape"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cyclesTextView" />
-
-    <TextView
-        android:id="@+id/timerTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:shadowColor="#40000000"
-        android:shadowDx="0"
-        android:shadowDy="4"
-        android:shadowRadius="8"
-        android:text="0"
-        android:textColor="#F9E2AF"
-        android:textSize="72sp"
-        app:layout_constraintBottom_toBottomOf="@+id/breathingCircle"
-        app:layout_constraintEnd_toEndOf="@+id/breathingCircle"
-        app:layout_constraintStart_toStartOf="@+id/breathingCircle"
-        app:layout_constraintTop_toTopOf="@+id/breathingCircle" />
-
-    <TextView
-        android:id="@+id/instructionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        codex/improve-ui/ux-and-add-settings-save-feature-6vdk3k
-        android:text="@string/get_started"
-        android:text="Нажмите \"Начать\""
-        main
-        android:textColor="#CBA6F7"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/breathingCircle" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/finishButton"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/bg_button_secondary"
-        android:fontFamily="sans-serif-medium"
-        android:stateListAnimator="@null"
-        android:text="Сброс"
-        android:textAllCaps="false"
-        android:textColor="#CDD6F4"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/startButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/instructionTextView" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/startButton"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/bg_button_primary"
-        android:fontFamily="sans-serif-bold"
-        android:stateListAnimator="@null"
-        android:text="Начать"
-        android:textAllCaps="false"
-        android:textColor="#1E1E2E"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/finishButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/finishButton"
-        app:layout_constraintTop_toTopOf="@+id/finishButton" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/vibrationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="18dp"
-        android:background="@drawable/bg_button_ghost"
-        android:paddingHorizontal="16dp"
-        android:text="Вибрация: выкл"
-        android:textAllCaps="false"
-        android:textColor="#A6ADC8"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/finishButton" />
 
     <ImageButton
         android:id="@+id/musicButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/bg_circle_button"
-        android:contentDescription="Включить или выключить музыку"
-        android:padding="12dp"
-        android:scaleType="fitCenter"
+        android:background="@drawable/button_secondary"
+        android:contentDescription="@string/music_button_desc"
+        android:padding="8dp"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_music_off"
-        app:layout_constraintBottom_toBottomOf="@+id/vibrationButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/vibrationButton" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/breathingCircle"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/circle_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/musicButton" />
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="0"
+        android:textColor="#F9E2AF"
+        android:textSize="64sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/breathingCircle" />
+
+    <TextView
+        android:id="@+id/instructionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Нажмите &quot;Начать&quot;"
+        android:textAlignment="center"
+        android:textColor="#CBA6F7"
+        android:textSize="30sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timerTextView" />
+
+    <TextView
+        android:id="@+id/phaseStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#94E2D5"
+        android:textSize="16sp"
+        tools:text="Фаза 1/3 • ВДЫХАЙ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/instructionTextView" />
+
+    <TextView
+        android:id="@+id/cyclesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="#A6E3A1"
+        android:textSize="18sp"
+        tools:text="Завершенных циклов: 0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phaseStatusTextView" />
+
+    <TextView
+        android:id="@+id/progressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="#CDD6F4"
+        android:textSize="14sp"
+        tools:text="Прогресс цели: 25%"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cyclesTextView" />
+
+    <ProgressBar
+        android:id="@+id/sessionProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="8dp"
+        android:max="100"
+        android:progress="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressTextView" />
+
+    <LinearLayout
+        android:id="@+id/targetControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sessionProgressBar">
+
+        <TextView
+            android:id="@+id/targetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/target_label"
+            android:textColor="#CDD6F4"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/decreaseTargetButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/button_secondary"
+            android:text="-"
+            android:textColor="#CDD6F4"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/targetValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="10"
+            android:textColor="#F5C2E7"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/increaseTargetButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/button_secondary"
+            android:text="+"
+            android:textColor="#CDD6F4"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_primary"
+        android:text="@string/start"
+        android:textAllCaps="false"
+        android:textColor="#11111B"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/targetControls" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/button_secondary"
+        android:text="@string/reset"
+        android:textAllCaps="false"
+        android:textColor="#CDD6F4"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/startButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
