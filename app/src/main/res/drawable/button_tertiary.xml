@@ -1,0 +1,9 @@
+<!-- res/drawable/button_tertiary.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="#45475A"/> <!-- Серый цвет кнопки -->
+    <corners android:radius="20dp"/> <!-- Скруглённые углы -->
+    <stroke android:width="2dp" android:color="#B4Befe"/> <!-- Граница кнопки -->
+    <padding android:left="16dp" android:right="16dp" android:top="8dp" android:bottom="8dp"/>
+</shape>

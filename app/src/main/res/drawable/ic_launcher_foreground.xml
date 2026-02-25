@@ -1,0 +1,25 @@
+<!-- res/drawable/ic_launcher_foreground.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path android:pathData="M54,10
+                            A44,44 0 1,0 54,98
+                            A44,44 0 1,0 54,10Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="50"
+                android:centerX="54"
+                android:centerY="54">
+                <item android:offset="0.0" android:color="#00BFFF"/>
+                <item android:offset="0.5" android:color="#1E90FF"/>
+                <item android:offset="1.0" android:color="#0077CC"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+
+</vector>
