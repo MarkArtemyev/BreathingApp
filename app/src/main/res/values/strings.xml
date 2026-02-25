@@ -8,7 +8,7 @@
     <string name="hold">ЗАДЕРЖИ</string>
     <string name="breathe_out">ВЫДЫХАЙ</string>
     <string name="cycles_completed">Завершенных циклов: %1$d</string>
-    <string name="get_started">Нажмите \'Начать\'</string>
+    <string name="get_started">Нажмите «Начать»</string>
     <string name="exit_confirmation">Вы уверены, что хотите выйти?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>

@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Нажмите &quot;Начать&quot;"
+        android:text="@string/get_started"
         android:textColor="#CBA6F7"
         android:textSize="26sp"
         android:textStyle="bold"
