@@ -92,7 +92,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
+        codex/improve-ui/ux-and-add-settings-save-feature-6vdk3k
+        android:text="@string/get_started"
         android:text="Нажмите \"Начать\""
+        main
         android:textColor="#CBA6F7"
         android:textSize="26sp"
         android:textStyle="bold"
